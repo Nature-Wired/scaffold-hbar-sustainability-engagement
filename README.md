@@ -1,78 +1,101 @@
-# Scaffold-HBAR — Blank starter
+# Scaffold-HBAR Sustainability Engagement
 
-Minimal Hedera dApp baseline: Next.js, Hardhat or Foundry, and Hedera networks (testnet, mainnet, local fork). No opinionated product UI — you add the app on top.
+A reusable Scaffold-HBAR template for discovering verified sustainability projects through the Sustainability Atlas and recording project-selection events on Hedera Consensus Service.
 
-CLI key: `blank` (branch `templates/blank-template`).
+## What this template demonstrates
 
-The full product guide — CLI flags, npm vs Yarn, deploy, and verify — lives in [Scaffold HBAR on Hedera docs](https://docs.hedera.com/solutions/tools/scaffold-hbar/index). This README is what is specific to **this** template.
+This template shows how a developer can combine:
 
-## What's in this template
+- Scaffold-HBAR
+- Sustainability Atlas project data
+- the Nature Wired Hedera Guardian Agent plugin
+- Hedera Consensus Service
+- HashScan transaction verification
 
-- Next.js App Router with wallet connect, **Debug Contracts**, and a local block explorer
-- Sample HTS contracts (`HederaToken`, `HtsTokenCreator`) so Debug Contracts has something to call
-- Hardhat and Foundry packages (the CLI can drop one)
-- Hashio RPC + Mirror Node config for Hedera testnet and mainnet
-- Package manager: Yarn (recommended) or npm — see `template.json`
+The example interaction is intentionally simple:
 
-Create a project from this template:
+1. Search Sustainability Atlas projects
+2. Review project metadata
+3. Choose a project
+4. Record that selection as an HCS message on Hedera testnet
+5. Verify the transaction on HashScan
 
-```bash
-npm create scaffold-hbar@latest -- --template blank
-```
+The project-selection event is non-financial and can be adapted for use cases such as fan engagement, employee programs, community participation, sponsor activations, customer engagement, or other sustainability workflows.
 
-`npx create-scaffold-hbar@latest --template blank` is equivalent. The CLI also asks for frontend, Solidity framework, network, and package manager.
+## Architecture
 
-## Work from this repository
+```text
+User
+  |
+  v
+Next.js frontend
+  |
+  +--> /api/sustainability/projects
+  |       |
+  |       v
+  |   Nature Wired Guardian Agent plugin
+  |       |
+  |       v
+  |   Sustainability Atlas API
+  |
+  +--> /api/sustainability/select
+          |
+          v
+      Hedera SDK
+          |
+          v
+      Hedera Consensus Service
+          |
+          v
+      HashScan verification
 
-This branch uses Yarn workspaces, so clone-and-run needs Yarn. Apps created with the CLI can use Yarn (default) or npm; see the [docs](https://docs.hedera.com/solutions/tools/scaffold-hbar/index).
+## Hedera integration
+The template uses Hedera Consensus Service to record a structured project-selection event.
 
-### Prerequisites
+Example event:
+{
+  "eventType": "sustainability_project_selection",
+  "project": {
+    "sourceTimestamp": "1740488390.511198282",
+    "name": "Example Sustainability Project",
+    "registryName": "Verra",
+    "methodology": "VM0047"
+  },
+  "selectedAt": "2026-10-01T18:21:22.000Z"
+}
 
-- [Node.js](https://nodejs.org/) ≥ 20.18.3
-- [Git](https://git-scm.com/) with `user.name` and `user.email` configured
-- [Yarn](https://yarnpkg.com/) (default; required if you clone this repo) or npm if you scaffolded with the CLI. For Yarn, install via Corepack:
-  ```bash
-  corepack enable && corepack prepare yarn@stable --activate
-  ```
-- **If using Foundry:** [Foundry](https://book.getfoundry.sh/getting-started/installation) (`forge`, `cast`, `anvil`)
+The template writes these events to a configured HCS topic on Hedera testnet.
 
-### Quick start
+## Example Hedera testnet evidence
 
-```bash
-yarn install
+Example testnet topic:
+0.0.10811399
 
-# Terminal 1: local Hedera-forked node
-yarn hardhat:chain
+Example successful testnet transaction:
+0.0.5490832@1790878876.784110000
 
-# Terminal 2: deploy to that node (8545)
-yarn hardhat:deploy --network localhost
+## Sustainability Atlas integration
+Project discovery is provided through:
+@nature-wired/hedera-guardian-agent-plugin
 
-# Terminal 3: Next.js app
-yarn next:start
-```
+The plugin searches the Sustainability Atlas API and returns structured project data including:
+- project name
+- country
+- registry
+- developer
+- methodology
+- category
+- sector
+- lifecycle stage
+- SDGs
 
-Open [http://localhost:3000](http://localhost:3000) and use the **Debug Contracts** page.
+The Atlas API key is used server-side only and is never exposed to the browser.
+Requirements
+- Node.js 20.18.3 or later
+- Yarn 4
+- Hedera testnet account
+- Funded testnet HBAR balance
+- Sustainability Atlas API key
 
-Frontend only (no local chain):
 
-```bash
-yarn install
-yarn next:dev
-```
 
-`yarn hardhat:deploy` without `--network localhost` targets the in-process `hardhat` network, not the long-running fork. Local Hardhat and Foundry workflows are in [`packages/hardhat/README.md`](packages/hardhat/README.md) and [`packages/foundry/README.md`](packages/foundry/README.md). Deploy and verify on testnet/mainnet: [Hedera docs](https://docs.hedera.com/solutions/tools/scaffold-hbar/index#deploying-to-testnet).
-
-## Project layout
-
-- **packages/hardhat** — Hardhat config, contracts, `deploy/` scripts, tests
-- **packages/foundry** — Forge config, contracts, `script/` deploy scripts, tests
-- **packages/nextjs** — Next.js app, RainbowKit, wagmi, scaffold config
-
-Network and RPC URLs are in `packages/hardhat/hardhat.config.ts` and `packages/foundry/foundry.toml` respectively.
-
-## Links
-
-- [Scaffold HBAR docs](https://docs.hedera.com/solutions/tools/scaffold-hbar/index)
-- [create-scaffold-hbar](https://github.com/hedera-dev/create-scaffold-hbar) — CLI
-- [Hedera Portal faucet](https://portal.hedera.com/faucet)
-- [HashScan](https://hashscan.io/)
