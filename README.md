@@ -91,12 +91,15 @@ The plugin searches the Sustainability Atlas API and returns structured project 
 - SDGs
 
 The Atlas API key is used server-side only and is never exposed to the browser.
-Requirements
+
+## Requirements
 - Node.js 20.18.3 or later
 - Yarn 4
 - Hedera testnet account
 - Funded testnet HBAR balance
 - Sustainability Atlas API key
 
+## Validation
+Verified on October 1, 2026 with a fresh external Scaffold-HBAR template install.
 
 
