@@ -1,0 +1,34 @@
+{
+  "name": "sustainability-engagement",
+  "description": "Scaffold-HBAR template for discovering Sustainability Atlas projects and recording auditable project selections with Hedera Consensus Service.",
+  "create-scaffold-hbar": {
+    "capabilities": {
+      "frontend": ["nextjs-app"],
+      "solidityFramework": ["hardhat"],
+      "packageManager": ["yarn"]
+    },
+    "defaults": {
+      "frontend": "nextjs-app",
+      "solidityFramework": "hardhat",
+      "packageManager": "yarn"
+    },
+    "outro": {
+      "sections": [
+        {
+          "title": "Next steps",
+          "steps": [
+            {
+              "label": "Configure Sustainability Atlas and Hedera credentials",
+              "command": "cp packages/nextjs/.env.example packages/nextjs/.env.local"
+            },
+            {
+              "label": "Start the frontend",
+              "command": "yarn next:dev"
+            }
+          ],
+          "text": "Add your Sustainability Atlas API key, Hedera testnet account credentials, and HCS topic ID to packages/nextjs/.env.local. See README.md for setup, security, and testnet verification instructions."
+        }
+      ]
+    }
+  }
+}
