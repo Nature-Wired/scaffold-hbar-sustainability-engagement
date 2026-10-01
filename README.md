@@ -48,6 +48,7 @@ Next.js frontend
           |
           v
       HashScan verification
+```
 
 ## Hedera integration
 The template uses Hedera Consensus Service to record a structured project-selection event.
