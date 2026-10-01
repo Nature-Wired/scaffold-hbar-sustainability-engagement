@@ -33,6 +33,7 @@ export default function Home() {
   const [isLoading, setIsLoading] = useState(false);
   const [selectionMessage, setSelectionMessage] = useState("");
   const [selectingProject, setSelectingProject] = useState<string | null>(null);
+  const [transactionId, setTransactionId] = useState<string | null>(null);
 
   async function handleSearch(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -67,6 +68,7 @@ export default function Home() {
   async function handleSelectProject(project: SustainabilityProject) {
     setSelectingProject(project.sourceTimestamp || project.name);
     setSelectionMessage("");
+    setTransactionId(null);
 
     try {
       const response = await fetch("/api/sustainability/select", {
@@ -87,8 +89,8 @@ export default function Home() {
       if (!response.ok) {
         throw new Error(data.error || "Unable to record project selection.");
       }
-
-      setSelectionMessage(`Selection recorded on Hedera. Transaction: ${data.transactionId}`);
+      setSelectionMessage("Selection recorded on Hedera testnet.");
+      setTransactionId(data.transactionId);
     } catch (error) {
       setSelectionMessage(error instanceof Error ? error.message : "Unable to record project selection.");
     } finally {
@@ -123,7 +125,23 @@ export default function Home() {
       </form>
 
       {message && <div className="mb-6 rounded-xl bg-base-200 p-4 text-sm">{message}</div>}
-      {selectionMessage && <div className="mb-6 rounded-xl bg-base-200 p-4 text-sm">{selectionMessage}</div>}
+
+      {selectionMessage && (
+        <div className="mb-6 rounded-xl bg-base-200 p-4 text-sm">
+          <p className="m-0">{selectionMessage}</p>
+
+          {transactionId && (
+            <a
+              href={`https://hashscan.io/testnet/transaction/${encodeURIComponent(transactionId)}`}
+              target="_blank"
+              rel="noreferrer"
+              className="link link-primary mt-2 inline-block"
+            >
+              View transaction on HashScan
+            </a>
+          )}
+        </div>
+      )}
 
       <section className="grid gap-6 md:grid-cols-2">
         {projects.map(project => (
