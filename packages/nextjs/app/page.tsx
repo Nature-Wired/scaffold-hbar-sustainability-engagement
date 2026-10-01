@@ -155,7 +155,7 @@ export default function Home() {
               className="btn btn-outline btn-sm mt-6"
               title="Hedera participation recording will be added next"
             >
-              Back this project
+              Choose this project
             </button>
           </article>
         ))}
