@@ -1,138 +1,207 @@
 # Agent instructions
 
-Briefing for coding agents in this app (Cursor, Claude Code, Codex). Claude Code loads it through `CLAUDE.md`.
+Guidance for coding agents working on the Scaffold-HBAR Sustainability Engagement template.
 
-This is a Scaffold-HBAR dApp: Next.js App Router, wallet connect, Debug Contracts, and Hedera networks (testnet, mainnet, local fork). The CLI may have left only Hardhat or only Foundry.
+This repository is a Scaffold-HBAR application that combines:
 
-Use the package manager this project was created with (`packageManager` in the root `package.json`, or the lockfile). Examples use `yarn`; if the app was created with npm, swap `yarn <script>` for `npm run <script>`.
+- Next.js App Router
+- Hardhat
+- Yarn workspaces
+- Sustainability Atlas project discovery
+- `@nature-wired/hedera-guardian-agent-plugin`
+- Hedera Consensus Service
+- HashScan testnet verification
 
-## Which Solidity package
+## Core user flow
 
-- `packages/hardhat` exists → Hardhat (`hardhat-deploy`)
-- `packages/foundry` exists → Foundry (Forge scripts)
-- `packages/nextjs` is always the frontend (App Router, RainbowKit, Wagmi, Viem, DaisyUI)
+The template demonstrates a simple non-financial sustainability engagement workflow:
 
-Follow only the flavor that is present.
+1. Search Sustainability Atlas projects.
+2. Review structured project metadata.
+3. Choose a project.
+4. Record the project selection as a Hedera Consensus Service message.
+5. Return a HashScan link for transaction verification.
 
-## Commands
+Keep this flow simple and reusable. Do not turn the template into a full marketplace, funding application, token system, or campaign-management platform.
 
-Package-prefixed scripts for package-specific work. Keep only truly cross-workspace commands unprefixed.
+## Project layout
 
-```bash
-# Local chain + deploy + frontend (separate terminals)
-yarn hardhat:chain    # Hedera-forked Hardhat node on 8545
-yarn hardhat:deploy --network localhost
-yarn foundry:chain    # Anvil from the Foundry package
-yarn foundry:deploy
-yarn next:start       # http://localhost:3000
+Frontend:
 
-# Frontend only
-yarn next:dev
+    packages/nextjs
 
-# Quality / build
-yarn lint
-yarn format
-yarn next:build
-yarn hardhat:compile
-yarn foundry:compile
+Sustainability Atlas search API:
 
-# Live networks
-yarn hardhat:deploy --network hederaTestnet   # or hederaMainnet
-yarn foundry:deploy --network hedera_testnet  # or hedera_mainnet
-yarn hardhat:verify:testnet
-yarn foundry:verify:testnet
+    packages/nextjs/app/api/sustainability/projects/route.ts
 
-# Deployer account
-yarn hardhat:account:generate
-yarn hardhat:account:import
-yarn hardhat:account
-```
+Hedera project-selection API:
 
-`yarn hardhat:deploy` without `--network localhost` targets the in-process `hardhat` network, not the long-running fork.
+    packages/nextjs/app/api/sustainability/select/route.ts
 
-## Layout
+Main user interface:
 
-### Hardhat
+    packages/nextjs/app/page.tsx
 
-- Contracts: `packages/hardhat/contracts/`
-- Deploy scripts: `packages/hardhat/deploy/`
-- Tests: `packages/hardhat/test/`
-- Config: `packages/hardhat/hardhat.config.ts`
-- Tagged deploy: if `deployHederaToken.tags = ["HederaToken"]`, run `yarn hardhat:deploy --tags HederaToken`
+Hardhat package:
 
-### Foundry
+    packages/hardhat
 
-- Contracts: `packages/foundry/contracts/`
-- Deploy scripts: `packages/foundry/script/` (`Deploy.s.sol`, `DeployHederaToken.s.sol`, `DeployHtsTokenCreator.s.sol`)
-- Tests: `packages/foundry/test/`
-- Config: `packages/foundry/foundry.toml`
-- One contract: `yarn foundry:deploy --file DeployHederaToken.s.sol`
+Template manifest:
 
-### After deploy
+    template.json
 
-ABIs and addresses are written to `packages/nextjs/contracts/deployedContracts.ts`. Put third-party contracts in `packages/nextjs/contracts/externalContracts.ts`.
+Environment example:
 
-Sample contracts on this starter: `HederaToken` (ERC-20) and `HtsTokenCreator` (HTS precompile at `0x167`).
+    packages/nextjs/.env.example
 
-## Frontend contract interaction
+## Sustainability Atlas integration
 
-Hooks live in `packages/nextjs/hooks/scaffold-hbar`. Use the names that exist in the codebase:
+Project discovery uses:
 
-- `useScaffoldReadContract` — not `useScaffoldContractRead`
-- `useScaffoldWriteContract` — not `useScaffoldContractWrite`
+    @nature-wired/hedera-guardian-agent-plugin
 
-Also: `useScaffoldWatchContractEvent`, `useScaffoldEventHistory`, `useDeployedContractInfo`, `useScaffoldContract`, `useTransactor`.
+The plugin connects to the Sustainability Atlas API and returns project metadata such as:
 
-```typescript
-const { data: balance } = useScaffoldReadContract({
-  contractName: "HederaToken",
-  functionName: "balanceOf",
-  args: [connectedAddress],
-});
+- project name
+- country
+- registry
+- developer
+- methodology
+- category
+- sector
+- lifecycle stage
+- SDGs
 
-const { writeContractAsync, isPending } = useScaffoldWriteContract({
-  contractName: "HederaToken",
-});
+Atlas credentials must remain server-side.
 
-await writeContractAsync({
-  functionName: "mint",
-  args: [connectedAddress, parseEther("1")],
-});
-```
+Never expose `ATLAS_API_KEY` to browser code.
 
-`HederaToken.mint` is `onlyOwner`. For HTS creation, `HtsTokenCreator.createToken` is payable (HTS fee via `msg.value`) and emits `TokenCreated`.
+## Hedera integration
 
-### UI
+Project selections are recorded through Hedera Consensus Service.
 
-Use `@scaffold-hbar-ui/components` for web3 UI: `Address`, `AddressInput`, `Balance`, `EtherInput`, `IntegerInput`.
+The selection API submits a structured event with the event type:
 
-Use DaisyUI classes, not raw Tailwind when a DaisyUI component exists:
+    sustainability_project_selection
 
-```tsx
-<button className="btn btn-primary">Connect</button>
-```
+The configured HCS topic ID is read from:
 
-### Networks
+    HCS_TOPIC_ID
 
-- Hardhat: `packages/hardhat/hardhat.config.ts` (`hederaTestnet` 296, `hederaMainnet` 295)
-- Foundry: `packages/foundry/foundry.toml` (`hedera_testnet`, `hedera_mainnet`)
-- Next.js: `packages/nextjs/scaffold.config.ts` (target networks, polling, RPC overrides, WalletConnect)
+The Hedera operator account and private key are used server-side only.
 
-## Style
+Never expose or commit:
 
-| Style | Use |
-| --- | --- |
-| `UpperCamelCase` | types, components |
-| `lowerCamelCase` | variables, functions |
-| `CONSTANT_CASE` | constants |
-| `snake_case` | Hardhat deploy files and Foundry scripts |
+    HEDERA_PRIVATE_KEY
 
-Next.js imports use the `~~` alias:
+The current template targets Hedera testnet.
 
-```tsx
-import { useTargetNetwork } from "~~/hooks/scaffold-hbar";
-```
+## Environment variables
 
-App Router pages live under `packages/nextjs/app/`. Add `"use client"` when the page uses hooks.
+Local configuration is stored in:
 
-Prefer `type` over `interface`. No `T` prefix on types. Let TypeScript infer when it can. Comments should add information.
+    packages/nextjs/.env.local
+
+Use:
+
+    packages/nextjs/.env.example
+
+as the variable-name reference.
+
+Expected variables:
+
+    ATLAS_API_KEY
+    ATLAS_API_URL
+    HEDERA_ACCOUNT_ID
+    HEDERA_PRIVATE_KEY
+    HEDERA_NETWORK
+    HCS_TOPIC_ID
+
+Never commit `.env.local` or real credential values.
+
+## Package manager
+
+Use Yarn.
+
+Do not introduce npm lockfiles.
+
+Install dependencies with:
+
+    yarn install
+
+## Development commands
+
+Frontend development:
+
+    yarn next:dev
+
+Lint:
+
+    yarn lint
+
+Format:
+
+    yarn next:format
+
+Next.js production build:
+
+    yarn next:build
+
+Hardhat compile:
+
+    yarn hardhat:compile
+
+## Validation expectations
+
+Before completing changes, run:
+
+    yarn lint
+    yarn next:build
+    yarn hardhat:compile
+
+For changes to Sustainability Atlas search, verify that a query returns structured project data.
+
+For changes to project selection, verify that:
+
+1. the HCS submission succeeds on testnet,
+2. a transaction ID is returned,
+3. the HashScan testnet link resolves to a successful `SUBMIT MESSAGE` transaction.
+
+## Frontend conventions
+
+Use the existing Scaffold-HBAR and DaisyUI conventions.
+
+Prefer DaisyUI classes where appropriate.
+
+App Router pages live under:
+
+    packages/nextjs/app
+
+Use `"use client"` only when React hooks or browser behavior require it.
+
+Prefer TypeScript `type` declarations over `interface` unless there is a specific reason otherwise.
+
+## Scope boundaries
+
+Keep the template generic and developer-oriented.
+
+Appropriate extensions include:
+
+- richer Sustainability Atlas search
+- project detail views
+- additional structured HCS metadata
+- campaign IDs
+- venue or engagement context
+- better HashScan verification UX
+
+Avoid adding unnecessary complexity such as:
+
+- financial transfers
+- token economics
+- NFT rewards
+- project purchasing
+- carbon-credit procurement
+- wallet requirements for end users
+- full sponsor dashboards
+
+The template should remain a clear reusable example of verified project discovery plus auditable project selection on Hedera.
