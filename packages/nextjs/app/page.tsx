@@ -31,6 +31,8 @@ export default function Home() {
   const [projects, setProjects] = useState<SustainabilityProject[]>([]);
   const [message, setMessage] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const [selectionMessage, setSelectionMessage] = useState("");
+  const [selectingProject, setSelectingProject] = useState<string | null>(null);
 
   async function handleSearch(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -62,7 +64,37 @@ export default function Home() {
       setIsLoading(false);
     }
   }
+  async function handleSelectProject(project: SustainabilityProject) {
+    setSelectingProject(project.sourceTimestamp || project.name);
+    setSelectionMessage("");
 
+    try {
+      const response = await fetch("/api/sustainability/select", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          sourceTimestamp: project.sourceTimestamp,
+          name: project.name,
+          registryName: project.registryName,
+          methodology: project.methodology,
+        }),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.error || "Unable to record project selection.");
+      }
+
+      setSelectionMessage(`Selection recorded on Hedera. Transaction: ${data.transactionId}`);
+    } catch (error) {
+      setSelectionMessage(error instanceof Error ? error.message : "Unable to record project selection.");
+    } finally {
+      setSelectingProject(null);
+    }
+  }
   return (
     <main className="mx-auto min-h-screen max-w-6xl px-6 py-12">
       <section className="mb-10">
@@ -91,6 +123,7 @@ export default function Home() {
       </form>
 
       {message && <div className="mb-6 rounded-xl bg-base-200 p-4 text-sm">{message}</div>}
+      {selectionMessage && <div className="mb-6 rounded-xl bg-base-200 p-4 text-sm">{selectionMessage}</div>}
 
       <section className="grid gap-6 md:grid-cols-2">
         {projects.map(project => (
@@ -153,9 +186,10 @@ export default function Home() {
             <button
               type="button"
               className="btn btn-outline btn-sm mt-6"
-              title="Hedera participation recording will be added next"
+              onClick={() => handleSelectProject(project)}
+              disabled={selectingProject === (project.sourceTimestamp || project.name)}
             >
-              Choose this project
+              {selectingProject === (project.sourceTimestamp || project.name) ? "Recording..." : "Choose this project"}
             </button>
           </article>
         ))}

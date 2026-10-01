@@ -13,6 +13,7 @@
   },
   "dependencies": {
     "@hashgraph/hedera-agent-kit": "^4.1.0",
+    "@hashgraph/sdk": "^2.81.0",
     "@heroicons/react": "^2.1.5",
     "@hiero-ledger/sdk": "^2.80.0",
     "@nature-wired/hedera-guardian-agent-plugin": "^0.1.0",
