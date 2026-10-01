@@ -12,7 +12,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@adraffy/ens-normalize@npm:^1.10.1, @adraffy/ens-normalize@npm:^1.11.0":
+"@adraffy/ens-normalize@npm:1.11.1, @adraffy/ens-normalize@npm:^1.10.1, @adraffy/ens-normalize@npm:^1.11.0":
   version: 1.11.1
   resolution: "@adraffy/ens-normalize@npm:1.11.1"
   checksum: e8b17fcc730ccc45a956e1fbb09edfe42be41c291079512082e9964f8ef4287e67913183cdd02fff71d2e215340d5b98a9bbbd9be32c5d36fad4ba2c1ec33ff2
@@ -1331,6 +1331,21 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@hashgraph/hedera-agent-kit@npm:^4.1.0":
+  version: 4.1.0
+  resolution: "@hashgraph/hedera-agent-kit@npm:4.1.0"
+  dependencies:
+    bignumber.js: 9.3.1
+    ethers: 6.17.0
+    long: 5.3.2
+    zod: 3.25.76
+    zod-to-json-schema: 3.25.2
+  peerDependencies:
+    "@hiero-ledger/sdk": ^2.86.2
+  checksum: b909e43d07f67be8c9d5265ea79251452e747440da417ef0f41970788e58cbb00b54fd2a622a435df4d29b55f091bbe5fcb23ac40dac296802a349444afdc6e8
+  languageName: node
+  linkType: hard
+
 "@hashgraph/system-contracts-forking@npm:0.1.2":
   version: 0.1.2
   resolution: "@hashgraph/system-contracts-forking@npm:0.1.2"
@@ -2134,6 +2149,18 @@ __metadata:
     "@emnapi/runtime": ^1.7.1
     "@tybys/wasm-util": ^0.10.1
   checksum: 22db9ad68e1d34351e1c0165489200584ab1cb0db866d360eca1c4213cd63169b153d179fe5ea4cbda849a252d20c4b01e56106285e7da8e4a56a4df92318ee7
+  languageName: node
+  linkType: hard
+
+"@nature-wired/hedera-guardian-agent-plugin@npm:^0.1.0":
+  version: 0.1.0
+  resolution: "@nature-wired/hedera-guardian-agent-plugin@npm:0.1.0"
+  dependencies:
+    axios: ^1.7.0
+    zod: ^3.23.0
+  peerDependencies:
+    "@hashgraph/hedera-agent-kit": ^4.0.0
+  checksum: 36a010fbacedad2f272961b47aa9c63d8ae4a54a3def8fd4530d4a4d5f0066fbb28c62161f1179e6a87d1b2973cd96647bacce6c89a40095a4aa8defe712b328
   languageName: node
   linkType: hard
 
@@ -3241,8 +3268,10 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@sh/nextjs@workspace:packages/nextjs"
   dependencies:
+    "@hashgraph/hedera-agent-kit": ^4.1.0
     "@heroicons/react": ^2.1.5
     "@hiero-ledger/sdk": ^2.80.0
+    "@nature-wired/hedera-guardian-agent-plugin": ^0.1.0
     "@rainbow-me/rainbowkit": 2.2.9
     "@react-native-async-storage/async-storage": ^2.2.0
     "@scaffold-hbar-ui/components": ^2.0.0
@@ -6118,6 +6147,18 @@ __metadata:
   languageName: node
   linkType: hard
 
+"axios@npm:^1.7.0":
+  version: 1.20.0
+  resolution: "axios@npm:1.20.0"
+  dependencies:
+    follow-redirects: ^1.16.0
+    form-data: ^4.0.6
+    https-proxy-agent: ^5.0.1
+    proxy-from-env: ^2.1.0
+  checksum: 58ff916938e317352e0c3483496a4609fd528da4823a8580969821748284bea2add069a39f2285a161020ce0886f33a982a162ebb49b5403c51a6977a1d50627
+  languageName: node
+  linkType: hard
+
 "axobject-query@npm:^4.1.0":
   version: 4.1.0
   resolution: "axobject-query@npm:4.1.0"
@@ -6187,6 +6228,13 @@ __metadata:
   version: 9.1.1
   resolution: "bignumber.js@npm:9.1.1"
   checksum: ad243b7e2f9120b112d670bb3d674128f0bd2ca1745b0a6c9df0433bd2c0252c43e6315d944c2ac07b4c639e7496b425e46842773cf89c6a2dcd4f31e5c4b11e
+  languageName: node
+  linkType: hard
+
+"bignumber.js@npm:9.3.1":
+  version: 9.3.1
+  resolution: "bignumber.js@npm:9.3.1"
+  checksum: 6ab100271a23a75bb8b99a4b1a34a1a94967ac0b9a52a198147607bd91064e72c6f356380d7a09cd687bf50d81ad2ed1a0a8edfaa90369c9003ed8bb2440d7f0
   languageName: node
   linkType: hard
 
@@ -8327,6 +8375,21 @@ __metadata:
   languageName: node
   linkType: hard
 
+"ethers@npm:6.17.0":
+  version: 6.17.0
+  resolution: "ethers@npm:6.17.0"
+  dependencies:
+    "@adraffy/ens-normalize": 1.11.1
+    "@noble/curves": 1.2.0
+    "@noble/hashes": 1.3.2
+    "@types/node": 22.7.5
+    aes-js: 4.0.0-beta.5
+    tslib: 2.7.0
+    ws: 8.21.0
+  checksum: 0ba314af2ae25622c60886caf83d825ce543262685961667d166b825c9dbfc66f905e0d7a2e3d8d4ccfa58b6ac20326e7f9a897b5580879efa758a50067ad082
+  languageName: node
+  linkType: hard
+
 "ethers@npm:^5.7.0":
   version: 5.8.0
   resolution: "ethers@npm:5.8.0"
@@ -8741,6 +8804,16 @@ __metadata:
   languageName: node
   linkType: hard
 
+"follow-redirects@npm:^1.16.0":
+  version: 1.16.0
+  resolution: "follow-redirects@npm:1.16.0"
+  peerDependenciesMeta:
+    debug:
+      optional: true
+  checksum: e90dce4607b1f6b8b9883287f912585573c19088209ad82341d550a795b4ba514522b73b1b340cf618279df27975cd46504d09149be60291ba6767384c1fd8f8
+  languageName: node
+  linkType: hard
+
 "for-each@npm:^0.3.3, for-each@npm:^0.3.5":
   version: 0.3.5
   resolution: "for-each@npm:0.3.5"
@@ -8777,6 +8850,19 @@ __metadata:
     hasown: ^2.0.2
     mime-types: ^2.1.12
   checksum: af8328413c16d0cded5fccc975a44d227c5120fd46a9e81de8acf619d43ed838414cc6d7792195b30b248f76a65246949a129a4dadd148721948f90cd6d4fb69
+  languageName: node
+  linkType: hard
+
+"form-data@npm:^4.0.6":
+  version: 4.0.6
+  resolution: "form-data@npm:4.0.6"
+  dependencies:
+    asynckit: ^0.4.0
+    combined-stream: ^1.0.8
+    es-set-tostringtag: ^2.1.0
+    hasown: ^2.0.4
+    mime-types: ^2.1.35
+  checksum: e51b9e97678c250c872cd4ec3e5eaa8fa43bee4b1acf8274c337308aebc6aebb0553091ce0810612826601ffafed9dace12504a63c6ef16c57fffcd7dcfec457
   languageName: node
   linkType: hard
 
@@ -9453,6 +9539,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"hasown@npm:^2.0.4":
+  version: 2.0.4
+  resolution: "hasown@npm:2.0.4"
+  dependencies:
+    function-bind: ^1.1.2
+  checksum: 4bd8f916b629e06324853593ffbdd45e200022952a85ad0c967f3bd4c2e4c7e1f9a9766fbe6186f60bd394e0afc73e719730caa1da15cd9bd832b7cdf53fd26c
+  languageName: node
+  linkType: hard
+
 "he@npm:^1.2.0":
   version: 1.2.0
   resolution: "he@npm:1.2.0"
@@ -9524,7 +9619,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"https-proxy-agent@npm:^5.0.0":
+"https-proxy-agent@npm:^5.0.0, https-proxy-agent@npm:^5.0.1":
   version: 5.0.1
   resolution: "https-proxy-agent@npm:5.0.1"
   dependencies:
@@ -10742,7 +10837,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"long@npm:^5.0.0":
+"long@npm:5.3.2, long@npm:^5.0.0":
   version: 5.3.2
   resolution: "long@npm:5.3.2"
   checksum: be215816b563f4ca27ad3677678b53415bc489f9e3466414e54d2d85f5f8e86768547fa58493bacfb363ffc57a664debc83403ccc2178aef0c40aca28bad47c9
@@ -10933,7 +11028,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"mime-types@npm:^2.1.12":
+"mime-types@npm:^2.1.12, mime-types@npm:^2.1.35":
   version: 2.1.35
   resolution: "mime-types@npm:2.1.35"
   dependencies:
@@ -12353,6 +12448,13 @@ __metadata:
   version: 1.1.0
   resolution: "proxy-from-env@npm:1.1.0"
   checksum: ed7fcc2ba0a33404958e34d95d18638249a68c430e30fcb6c478497d72739ba64ce9810a24f53a7d921d0c065e5b78e3822759800698167256b04659366ca4d4
+  languageName: node
+  linkType: hard
+
+"proxy-from-env@npm:^2.1.0":
+  version: 2.1.0
+  resolution: "proxy-from-env@npm:2.1.0"
+  checksum: b106ad790f26d47ba4791af3fe8cba5c8d35d85020119c82c05b413eb11b3ab97d2393ecaed51bca97c2788fa256408283dfeb4d970b2ebcae6702310f064e7e
   languageName: node
   linkType: hard
 
@@ -15204,6 +15306,21 @@ __metadata:
   languageName: node
   linkType: hard
 
+"ws@npm:8.21.0":
+  version: 8.21.0
+  resolution: "ws@npm:8.21.0"
+  peerDependencies:
+    bufferutil: ^4.0.1
+    utf-8-validate: ">=5.0.2"
+  peerDependenciesMeta:
+    bufferutil:
+      optional: true
+    utf-8-validate:
+      optional: true
+  checksum: 83ff89ae011bc5c3c5605a45a0d50e12589143c7500ca4de83a8d43b3cd26e71f422cb3206fd1a9e6d541d666eeb66255c30d095d62d413b3c7afe5d2c5cb928
+  languageName: node
+  linkType: hard
+
 "ws@npm:^7.4.6, ws@npm:^7.5.1, ws@npm:^7.5.10":
   version: 7.5.10
   resolution: "ws@npm:7.5.10"
@@ -15402,6 +15519,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"zod-to-json-schema@npm:3.25.2":
+  version: 3.25.2
+  resolution: "zod-to-json-schema@npm:3.25.2"
+  peerDependencies:
+    zod: ^3.25.28 || ^4
+  checksum: 8b728476374a38711e0ca5c066be16ed8facf5a5eb5a76f371b0062e5b6b11f906f446c616d6879b9a4d373738c74cd26e4dfe1d460e7fb9a155a3fe9d04b690
+  languageName: node
+  linkType: hard
+
 "zod@npm:3.22.4":
   version: 3.22.4
   resolution: "zod@npm:3.22.4"
@@ -15409,7 +15535,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"zod@npm:^3.24.4":
+"zod@npm:3.25.76, zod@npm:^3.23.0, zod@npm:^3.24.4":
   version: 3.25.76
   resolution: "zod@npm:3.25.76"
   checksum: c9a403a62b329188a5f6bd24d5d935d2bba345f7ab8151d1baa1505b5da9f227fb139354b043711490c798e91f3df75991395e40142e6510a4b16409f302b849
