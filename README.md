@@ -67,13 +67,19 @@ Example event:
 
 The template writes these events to a configured HCS topic on Hedera testnet.
 
+## Demo
+
+https://youtu.be/J3QfeXyd4g4
+
 ## Example Hedera testnet evidence
 
 Example testnet topic:
-0.0.10811399
+
+https://hashscan.io/testnet/topic/0.0.10811399
 
 Example successful testnet transaction:
-0.0.5490832@1790878876.784110000
+
+https://hashscan.io/testnet/transaction/0.0.5490832@1790878876.784110000
 
 ## Sustainability Atlas integration
 Project discovery is provided through:
